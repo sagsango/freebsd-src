@@ -102,6 +102,9 @@ atexit_register(struct atexit_fn *fptr)
 		struct atexit *old__atexit;
 		old__atexit = __atexit;
 	        _MUTEX_UNLOCK(&atexit_mutex);
+            /* XXX: Notice how they unlonked before calling malloc
+             * and took the lock again after the malloc
+             */
 		if ((p = (struct atexit *)malloc(sizeof(*p))) == NULL)
 			return (-1);
 		_MUTEX_LOCK(&atexit_mutex);
